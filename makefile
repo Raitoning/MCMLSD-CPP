@@ -3,12 +3,7 @@
 # Settings based on "The Cherno"'s recommended settings.
 # (Channel: https://www.youtube.com/channel/UCQ-W1KE9EYfdxhL6S4twUNw)
 # (Project setup video: https://www.youtube.com/watch?v=qeH9Xv_90KM)
-# Version 1.0 (2020.07.20.16.50)
-
-# C++ compiler and flags
-CXX=g++
-CXX_COMPILING_FLAGS=-Wall -std=c++11
-CXX_LINKING_FLAGS=$(CXX_COMPILING_FLAGS)
+# Version 1.1.3 (2020.08.06.19.34)
 
 # Project settings
 PROJECT_NAME=MCMLSD-CPP
@@ -17,14 +12,21 @@ PLATFORM=Linux
 # Configuration is either Debug or Release
 CONFIGURATION=Debug
 
-# Paths to sources, binaries and intermediates files
+# Paths to sources, binaries, libraries and intermediates files
 SOURCES_DIR=src
 BINARIES_DIR=bin
+LIBRARIES_DIR=lib
 BINARIES_OUTPUT_DIR=$(BINARIES_DIR)/$(PLATFORM)/$(CONFIGURATION)
 INTERMEDIATES_DIR=$(BINARIES_DIR)/intermediates/$(PLATFORM)/$(CONFIGURATION)
 
+# C++ compiler and flags
+CXX=g++
+OPENCV_LIBRARY=`pkg-config --cflags --libs opencv`
+CXX_COMPILING_FLAGS=-Wall -std=c++11 -I $(LIBRARIES_DIR)
+CXX_LINKING_FLAGS=$(CXX_COMPILING_FLAGS) $(OPENCV_LIBRARY)
+
 # Object file to compile, use .o suffix
-OBJECT_FILES=Main.o
+OBJECT_FILES=Main.o Math.o Kernel.o
 
 # Source files for intermediates and debug purposes
 SOURCE_FILES=$(patsubst %.o, %.cpp, $(OBJECT_FILES))
@@ -32,11 +34,13 @@ SOURCE_FILES=$(patsubst %.o, %.cpp, $(OBJECT_FILES))
 # Add optimization options in the Release configuration
 ifeq ($(CONFIGURATION), Release)
 	CXX_LINKING_FLAGS += -O2
+	CXX_COMPILING_FLAGS += -O2
 	else
 	# Assume the configuration is Debug
 	CONFIGURATION=Debug
 	# Add debug symbols in the Debug configuration
 	CXX_LINKING_FLAGS += -g
+	CXX_COMPILING_FLAGS += -g
 endif
 
 $(info Compiling in $(CONFIGURATION) configuration for the $(PLATFORM) platform.)
