@@ -3,7 +3,7 @@
 # Settings based on "The Cherno"'s recommended settings.
 # (Channel: https://www.youtube.com/channel/UCQ-W1KE9EYfdxhL6S4twUNw)
 # (Project setup video: https://www.youtube.com/watch?v=qeH9Xv_90KM)
-# Version 1.1.3 (2020.08.06.19.34)
+# Version 1.1.4 (2020.08.11.20.14)
 
 # Project settings
 PROJECT_NAME=MCMLSD-CPP
@@ -26,7 +26,7 @@ CXX_COMPILING_FLAGS=-Wall -std=c++11 -I $(LIBRARIES_DIR)
 CXX_LINKING_FLAGS=$(CXX_COMPILING_FLAGS) $(OPENCV_LIBRARY)
 
 # Object file to compile, use .o suffix
-OBJECT_FILES=Main.o Math.o Kernel.o
+OBJECT_FILES=Main.o Math.o Kernel.o LikelihoodModel.o
 
 # Source files for intermediates and debug purposes
 SOURCE_FILES=$(patsubst %.o, %.cpp, $(OBJECT_FILES))

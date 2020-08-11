@@ -4,7 +4,7 @@
 #include <Instrumentor.h>
 
 #include "Kernel.hpp"
-#include "Math.hpp"
+#include "LikelihoodModel.hpp"
 
 using namespace cv;
 
@@ -22,6 +22,13 @@ int main (int argc, char* argv[])
     PROFILE_BEGIN_SESSION("Profile", "Profile.json");
     PROFILE_FUNCTION();
 
+    // NOTE: I took the liberty to already load the likelihood model
+    //       before it is done in the original MATLAB implementation,
+    //       as I/O *can* be slow and reduce the performance of the algorithm.
+    //       Loading the model shouldn't be inside the algorithm while it is
+    //       busy computing stuff.
+    LikelihoodModel model = LoadModel ("res/likelihood_model/");
+
     cv::Mat image = cv::imread (argv[1]);
     if (image.empty())
     {
@@ -34,7 +41,8 @@ int main (int argc, char* argv[])
 
     cv::resize (image, resizedImage, cv::Size(), 0.25, 0.25);
 
-    KernelInitialization (resizedImage.rows, resizedImage.cols);
+    KernelInfo kernels = KernelInitialization (resizedImage.rows,
+                                               resizedImage.cols);
 
     PROFILE_END_SESSION();
 
