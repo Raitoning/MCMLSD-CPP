@@ -5,6 +5,7 @@
 
 #include "Kernel.hpp"
 #include "LikelihoodModel.hpp"
+#include "LineSegmentation.hpp"
 
 using namespace cv;
 
@@ -43,6 +44,8 @@ int main (int argc, char* argv[])
 
     KernelInfo kernels = KernelInitialization (resizedImage.rows,
                                                resizedImage.cols);
+
+    LineSegmentation_HighRes (resizedImage, kernels, model);
 
     PROFILE_END_SESSION();
 
